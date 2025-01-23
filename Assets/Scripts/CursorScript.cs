@@ -23,4 +23,9 @@ public class CursorScript : MonoBehaviour{
     public void ButtonClicked(){
     Cursor.SetCursor(cursors[2], Vector2.zero, CursorMode.ForceSoftware);
     }
+
+    public void OnPropCursor()
+    {
+        Cursor.SetCursor(cursors[3], Vector2.zero, CursorMode.ForceSoftware);
+    }
 }
