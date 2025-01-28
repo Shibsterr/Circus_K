@@ -18,7 +18,7 @@ public class FadeScript : MonoBehaviour
 
     }
 
-    IEnumerator FadeOut (float seconds)
+    public IEnumerator FadeOut (float seconds)
     {
         for(float a = 1f; a >= -0.05f; a -= 0.05f)
         {
@@ -30,9 +30,9 @@ public class FadeScript : MonoBehaviour
         img.raycastTarget = false;
     }
 
-    IEnumerator FadeIn (float seconds)
+    public IEnumerator FadeIn (float seconds)
     {
-        img.raycastTarget = false;
+        img.raycastTarget = true;
         for (float a = 0f; a >= 1.05f; a += 0.05f)
         {
             tempColor = img.color;
