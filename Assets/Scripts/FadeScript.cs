@@ -33,7 +33,7 @@ public class FadeScript : MonoBehaviour
     public IEnumerator FadeIn (float seconds)
     {
         img.raycastTarget = true;
-        for (float a = 0f; a >= 1.05f; a += 0.05f)
+        for (float a = 0f; a <= 1.05f; a += 0.05f)
         {
             tempColor = img.color;
             tempColor.a = a;

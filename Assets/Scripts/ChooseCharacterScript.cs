@@ -57,7 +57,7 @@ public class ChooseCharacterScript : MonoBehaviour
             PlayerPrefs.SetInt("SelectedCharacter", characterIndex);
             PlayerPrefs.SetString("PlayerName", characterName);
             PlayerPrefs.SetInt("PlayerCount", playerCount);
-            StartCoroutine(sceneChangeScript.Delay("Play", characterIndex, characterName));
+            StartCoroutine(sceneChangeScript.Delay("play", characterIndex, characterName));
         }
         else
             inputField.GetComponent<TMPro.TMP_InputField>().Select();
