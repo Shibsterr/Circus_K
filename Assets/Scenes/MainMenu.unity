@@ -471,7 +471,7 @@ AudioSource:
   m_GameObject: {fileID: 262746524}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: e96c82aaa3843a444aadbb84c4611326, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -4024,7 +4024,7 @@ AudioSource:
   m_GameObject: {fileID: 1346305282}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: e96c82aaa3843a444aadbb84c4611326, type: 2}
   m_audioClip: {fileID: 8300000, guid: eb7f10105313640a18ce7926041a4d76, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
@@ -6003,7 +6003,7 @@ MonoBehaviour:
   - {fileID: 2008216693}
   - {fileID: 577847684}
   inputField: {fileID: 1274512111}
-  playerCount: 2
+  playerCount: 7
   sceneChangeScript: {fileID: 2058378168}
 --- !u!1 &2061664142
 GameObject:
