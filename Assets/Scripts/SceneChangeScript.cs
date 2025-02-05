@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneChangeScript : MonoBehaviour
 {
     public FadeScript fadeScript;
+    public SaveLoadScript saveLoadScript;
 
 
 
@@ -31,17 +32,18 @@ public class SceneChangeScript : MonoBehaviour
         {
             yield return fadeScript.FadeIn(0.1f);
             PlayerPrefs.DeleteAll();
-           /* if(UnityEditor.EditorApplication.isPlaying )
+           if(UnityEditor.EditorApplication.isPlaying )
             {
                 UnityEditor.EditorApplication.isPlaying = false;
             }
             else
-            {*/
+            {
                 Application.Quit();
-            //}
+            }
         }else if (string.Equals(command, "play", StringComparison.OrdinalIgnoreCase))
         {
             yield return fadeScript.FadeIn(0.1f);
+            saveLoadScript.SaveGame(characterIndex, name);
             SceneManager.LoadScene(1, LoadSceneMode.Single);
         }else if (string.Equals(command, "settings", StringComparison.OrdinalIgnoreCase))
         {
