@@ -20,12 +20,12 @@ public class PlayerScript : MonoBehaviour
 
         otherPlayers = new int[PlayerPrefs.GetInt("PlayerCount")];
         string[] nameArray = ReadLinesFromFile(textFileName);
-        for (int i = 0; i<otherPlayers.Length-1; i++){
+        for (int i = 0; i<otherPlayers.Length; i++){
             Debug.Log("Count: " + i);
             spawnpoint.transform.position += new Vector3(0.7f, 0, 0.6f);
             index = Random.Range(0, playerPreferbs.Length - 1);
             GameObject character = Instantiate(playerPreferbs[index], spawnpoint.transform.position, Quaternion.identity);
-            character.GetComponent<NameScript>().SetPlayerName(nameArray[Random.Range(0, nameArray.Length-1)]);
+            character.GetComponent<NameScript>().SetPlayerName(nameArray[Random.Range(0, nameArray.Length)]);
         }
 
     }
