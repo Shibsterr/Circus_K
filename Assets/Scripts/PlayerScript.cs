@@ -7,6 +7,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject[] playerPreferbs;
     int characterIndex;
     public GameObject spawnpoint;
+    public GameObject mainCharacter;
     int[] otherPlayers;
     int index;
     private const string textFileName = "playerNames";
@@ -15,7 +16,7 @@ public class PlayerScript : MonoBehaviour
     void Awake()
     {
         characterIndex = PlayerPrefs.GetInt("SelectedCharacter", 0);
-        GameObject mainCharacter = Instantiate(playerPreferbs[characterIndex], spawnpoint.transform.position, Quaternion.identity);
+        mainCharacter = Instantiate(playerPreferbs[characterIndex], spawnpoint.transform.position, Quaternion.identity);
         mainCharacter.GetComponent<NameScript>().SetPlayerName(PlayerPrefs.GetString("PlayerName"));
 
         otherPlayers = new int[PlayerPrefs.GetInt("PlayerCount")];

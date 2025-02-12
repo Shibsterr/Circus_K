@@ -14,5 +14,5 @@ Unity 2.5D circus game project
 
 ## Extra
 - [ ] Movement with animations
-- [ ] Pause menu (time scale)
+- [x] Pause menu (time scale)
 ...
