@@ -7,6 +7,8 @@ using System;
 public class SaveLoadScript : MonoBehaviour
 {
     string saveFileName = "saveFile.json";
+    int characterIndex, playerCount;
+    string characterName;
 
     [Serializable]
     public class GameData
@@ -40,6 +42,13 @@ public class SaveLoadScript : MonoBehaviour
         }
         else
             Debug.LogError("Save file not found in: " + filePath);
+    }
+
+    public void Save()
+    {
+        PlayerPrefs.SetInt("SelectedCharacter", characterIndex);
+        PlayerPrefs.SetString("PlayerName", characterName);
+        PlayerPrefs.SetInt("PlayerCount", playerCount);
     }
 
 }
