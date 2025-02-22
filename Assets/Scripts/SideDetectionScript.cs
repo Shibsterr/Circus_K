@@ -6,30 +6,29 @@ public class SideDetectionScript : MonoBehaviour
 {
     DiceRollScript diceRollScript;
 
-
     void Awake()
     {
         diceRollScript = FindObjectOfType<DiceRollScript>();
+
+        if (diceRollScript == null)
+        {
+            Debug.LogError("DiceRollScript not found in scene!");
+        }
     }
 
     private void OnTriggerStay(Collider sideCollider)
     {
         if (diceRollScript != null)
         {
-            if (diceRollScript.GetComponent<Rigidbody>().velocity == Vector3.zero)
+            if (diceRollScript.GetComponent<Rigidbody>().velocity.magnitude < 0.1f)
             {
                 diceRollScript.isLanded = true;
-                diceRollScript.diceFaceNum = sideCollider.name;
+                diceRollScript.diceFaceNum = sideCollider.gameObject.name; // Ensure the dice face is correctly assigned
             }
             else
             {
                 diceRollScript.isLanded = false;
             }
-
-        }
-        else
-        {
-            Debug.Log("DiceRollScript not found in a scene!");
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DiceRollScript : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class DiceRollScript : MonoBehaviour
     void Awake()
     {
         Initialize();
+    }
+    public void SetDiceInteractable(bool isInteractable)
+    {
+        GetComponent<Button>().interactable = isInteractable;
     }
 
     private void Initialize()
@@ -65,4 +70,6 @@ public class DiceRollScript : MonoBehaviour
             }
         }
     }
+
+
 }

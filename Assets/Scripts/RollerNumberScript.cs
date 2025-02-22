@@ -2,33 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class RollerNumberScript : MonoBehaviour
 {
     DiceRollScript diceRollScript;
+    GameLogic gameLogic;
+
     [SerializeField]
     TMP_Text rolledNumberText;
 
-
-    // Start is called before the first frame update
     void Awake()
     {
         diceRollScript = FindObjectOfType<DiceRollScript>();
+        gameLogic = FindObjectOfType<GameLogic>();
+
+        if (diceRollScript == null)
+            Debug.LogError("DiceRollScript not found in scene!");
+
+        if (gameLogic == null)
+            Debug.LogError("GameLogic script not found in scene!");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (diceRollScript != false)
+        if (diceRollScript != null && diceRollScript.isLanded)
         {
-            if (diceRollScript.isLanded)
-                rolledNumberText.text = diceRollScript.diceFaceNum;
+            rolledNumberText.text = diceRollScript.diceFaceNum;
 
+            int rolledValue;
+            if (int.TryParse(diceRollScript.diceFaceNum, out rolledValue))
+            {
+                // Pass the player's index (assumed here as 0 for the main player) along with the rolled value.
+                gameLogic.MovePlayer(rolledValue);
+            }
             else
-                rolledNumberText.text = "?";
+            {
+                Debug.LogError("Failed to convert diceFaceNum to an integer: " + diceRollScript.diceFaceNum);
+            }
         }
         else
-            Debug.LogError("DiceRollScript not found in scene!");
+        {
+            rolledNumberText.text = "?";
+        }
     }
 }
