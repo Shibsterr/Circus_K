@@ -9,12 +9,12 @@ public class GameLogic : MonoBehaviour
     public DiceRollScript diceRollScript;
     public float moveSpeed = 3f;
     public GameObject platformsParent;
-    public Camera mainCamera;
-    public float zoomInSize = 5f;
-    public float zoomOutSize = 10f;
-    private Vector3 cameraOriginalPosition;
-    private bool playerCanRoll = true;
+    public GameObject winScreen; // Reference to the win screen UI
+    public TMP_Text winMessageText; // Displays win/loss message
+    public TMP_Text rollsCountText; // Displays roll count
+    public TMP_Text timeElapsedText; // Displays time elapsed
 
+    private bool playerCanRoll = true;
     private List<GameObject> players = new List<GameObject>();
     private List<Transform> waypoints = new List<Transform>();
     private int[] playerTilePositions;
@@ -25,15 +25,17 @@ public class GameLogic : MonoBehaviour
     private string characterName;
     private HashSet<int> turnTiles = new HashSet<int> { 4, 9, 14, 19 };
     private int currentPlayerIndex = 0;
+    private int rollCount = 0;
+    private float startTime;
+    private bool gameOver = false; // Prevent further actions after the game ends
 
     void Start()
     {
         FindWaypoints();
         FindPlayers();
         playerTilePositions = new int[players.Count];
-        cameraOriginalPosition = mainCamera.transform.position;
-        mainCamera.orthographicSize = zoomOutSize;
         SetupCurrentPlayer();
+        startTime = Time.time;
     }
 
     void FindWaypoints()
@@ -78,19 +80,26 @@ public class GameLogic : MonoBehaviour
 
     public void MovePlayer(int steps)
     {
-        if (!isMoving && waypoints.Count > 0)
+        if (!isMoving && waypoints.Count > 0 && !gameOver)
         {
             playerCanRoll = false;
+
+            // Increment roll count only for the player (index 0)
+            if (currentPlayerIndex == 0)
+            {
+                rollCount++;
+            }
+
             Debug.Log($"🎲 Dice rolled: {steps} steps! Starting movement...");
             StartCoroutine(MoveStepByStep(steps));
         }
     }
 
+
     IEnumerator MoveStepByStep(int steps)
     {
         isMoving = true;
         GameObject character = players[currentPlayerIndex];
-        mainCamera.orthographicSize = zoomInSize;
 
         int targetIndex = Mathf.Min(playerTilePositions[currentPlayerIndex] + steps, waypoints.Count - 1);
         int stepCount = 0;
@@ -105,9 +114,7 @@ public class GameLogic : MonoBehaviour
             Transform nextWaypoint = waypoints[nextIndex];
             Debug.Log($"🚶 Moving step {stepCount + 1}/{steps} ➡ Tile {nextIndex} at {nextWaypoint.position}");
 
-            Vector3 randomOffset = (Vector3)Random.insideUnitCircle * 0.5f;
-            randomOffset.z = 0;
-            yield return StartCoroutine(MoveToPosition(character, nextWaypoint.position + randomOffset + new Vector3(0, 0.1f, 0)));
+            yield return StartCoroutine(MoveToPosition(character, nextWaypoint.position));
 
             if (turnTiles.Contains(playerTilePositions[currentPlayerIndex]))
             {
@@ -123,23 +130,70 @@ public class GameLogic : MonoBehaviour
         Debug.Log($"✅ Finished moving. Landed on tile {playerTilePositions[currentPlayerIndex]} after {stepCount} steps.");
         PlayAnimation("Idle");
         isMoving = false;
-
-        mainCamera.orthographicSize = zoomOutSize;
-        mainCamera.transform.position = new Vector3(cameraOriginalPosition.x, cameraOriginalPosition.y + 3, cameraOriginalPosition.z);
-
-        if (diceRollScript != null)
-        {
-            Debug.Log("🎲 Resetting dice for next roll.");
-            diceRollScript.ResetDice();
-        }
+        SpreadPlayersOnTile(playerTilePositions[currentPlayerIndex]);
 
         if (playerTilePositions[currentPlayerIndex] == waypoints.Count - 1)
         {
-            Debug.Log("🏆 You Win!");
+            HandleWin();
         }
         else
         {
+            if (diceRollScript != null)
+            {
+                Debug.Log("🎲 Resetting dice for next roll.");
+                diceRollScript.ResetDice();
+            }
             NextTurn();
+        }
+    }
+
+    void HandleWin()
+    {
+        Debug.Log("🏆 Game Over!");
+
+        gameOver = true; // Stop further actions
+        Time.timeScale = 0f; // Pause game time
+
+        float timeElapsed = Time.time - startTime;
+        winScreen.SetActive(true); // Show the win screen
+
+        if (currentPlayerIndex == 0)
+        {
+            winMessageText.text = "🎉 You Won! 🏆";
+        }
+        else
+        {
+            winMessageText.text = "💀 You Lost! The AI Won... 😞";
+        }
+
+        rollsCountText.text = $"Rolls Taken: {rollCount}";
+        timeElapsedText.text = $"Time Elapsed: {timeElapsed:F2} seconds";
+
+        SaveLoadScript saveLoad = FindObjectOfType<SaveLoadScript>();
+        //if (saveLoad != null)
+        //{
+        //    saveLoad.SaveGame();
+        //}
+    }
+
+
+
+
+    void SpreadPlayersOnTile(int tileIndex)
+    {
+        List<GameObject> playersOnTile = new List<GameObject>();
+        foreach (var player in players)
+        {
+            if (playerTilePositions[players.IndexOf(player)] == tileIndex)
+            {
+                playersOnTile.Add(player);
+            }
+        }
+
+        for (int i = 0; i < playersOnTile.Count; i++)
+        {
+            Vector3 offset = new Vector3((i % 2 == 0 ? 1 : -1) * (i / 2) * 0.3f, (i / 2) * 0.3f, 0);
+            playersOnTile[i].transform.position += offset;
         }
     }
 
@@ -148,7 +202,6 @@ public class GameLogic : MonoBehaviour
         while (Vector3.Distance(character.transform.position, target) > 0.1f)
         {
             character.transform.position = Vector3.MoveTowards(character.transform.position, target, moveSpeed * Time.deltaTime);
-            mainCamera.transform.position = new Vector3(character.transform.position.x, character.transform.position.y + 3, mainCamera.transform.position.z);
             yield return null;
         }
         Debug.Log($"✔️ Reached waypoint at {target}");
@@ -166,6 +219,8 @@ public class GameLogic : MonoBehaviour
 
     void NextTurn()
     {
+        if (gameOver) return; // Stop turn progression if the game has ended
+
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
         SetupCurrentPlayer();
 

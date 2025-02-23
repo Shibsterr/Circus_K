@@ -5,8 +5,10 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu = null;
+    [SerializeField] GameObject leaderBoard;
+    [SerializeField] GameObject Settings;
 
-    bool isPaused;
+    bool isPaused, LeaderBoard, settings;
     // Update is called once per frame
     void Update()
     {
@@ -24,4 +26,17 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = isPaused ? 0 : 1;
         pauseMenu.SetActive(isPaused);
     }
+
+    public void LeaderboardShow()
+    {
+        LeaderBoard = !LeaderBoard;
+        leaderBoard.SetActive(LeaderBoard);
+    }
+
+    public void SettingsShow()
+    {
+        settings = !settings;
+        Settings.SetActive(settings);
+    }
+
 }

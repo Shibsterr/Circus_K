@@ -10,9 +10,12 @@ Unity 2.5D circus game project
 - [x] Create settings menu (resolution,sound,etc)
 - [x] Create second screen
 - [ ] Create leaderboard (name, time, count)
-- [ ] Game logic with movement (waypoints, path finding)
+- [x] Game logic with movement (waypoints, path finding)
 
 ## Extra
-- [ ] Movement with animations
+- [x] Movement with animations
 - [x] Pause menu (time scale)
-...
+
+## Bugs
+- [ ] Problems with scene swapping. Not rendering lightning, displaying errors when swapping scenes due to scriptholders
+- [ ] Settings not saving

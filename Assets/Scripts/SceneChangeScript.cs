@@ -29,7 +29,7 @@ public class SceneChangeScript : MonoBehaviour
     public void GoBackFromLevel()
     {
         pauseMenu.Menu();
-        StartCoroutine(Delay("backMenu",-1,""));
+        StartCoroutine(Delay("backMenu", -1, ""));
     }
 
     public void GoBackToSettings()
@@ -40,11 +40,11 @@ public class SceneChangeScript : MonoBehaviour
 
     public IEnumerator Delay(string command, int characterIndex, string name)
     {
-        if(string.Equals(command, "quit", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(command, "quit", StringComparison.OrdinalIgnoreCase))
         {
             yield return fadeScript.FadeIn(0.1f);
             PlayerPrefs.DeleteAll();
-           if(UnityEditor.EditorApplication.isPlaying )
+            if (UnityEditor.EditorApplication.isPlaying)
             {
                 UnityEditor.EditorApplication.isPlaying = false;
             }
@@ -52,24 +52,29 @@ public class SceneChangeScript : MonoBehaviour
             {
                 Application.Quit();
             }
-        }else if (string.Equals(command, "play", StringComparison.OrdinalIgnoreCase))
+        }
+        else if (string.Equals(command, "play", StringComparison.OrdinalIgnoreCase))
         {
             yield return fadeScript.FadeIn(0.1f);
             saveLoadScript.SaveGame(characterIndex, name);
             SceneManager.LoadScene(1, LoadSceneMode.Single);
-        }else if (string.Equals(command, "settings", StringComparison.OrdinalIgnoreCase))
+        }
+        else if (string.Equals(command, "settings", StringComparison.OrdinalIgnoreCase))
         {
             yield return fadeScript.FadeIn(0.1f);
             SceneManager.LoadScene(2, LoadSceneMode.Single);
-        }else if (string.Equals(command, "back", StringComparison.OrdinalIgnoreCase))
+        }
+        else if (string.Equals(command, "back", StringComparison.OrdinalIgnoreCase))
         {
             yield return fadeScript.FadeIn(0.1f);
             SceneManager.LoadScene(0, LoadSceneMode.Single);
-        }else if (string.Equals(command, "backMenu", StringComparison.OrdinalIgnoreCase))
+        }
+        else if (string.Equals(command, "backMenu", StringComparison.OrdinalIgnoreCase))
         {
             yield return fadeScript.FadeIn(0.1f);
             SceneManager.LoadScene(0, LoadSceneMode.Single);
-        }else if (string.Equals(command, "backSettings", StringComparison.OrdinalIgnoreCase))
+        }
+        else if (string.Equals(command, "backSettings", StringComparison.OrdinalIgnoreCase))
         {
             yield return fadeScript.FadeIn(0.1f);
             SceneManager.LoadScene(2, LoadSceneMode.Single);
