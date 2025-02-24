@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.71776605, g: 0.47363466, b: 0.42387995, a: 1}
+  m_IndirectSpecularColor: {r: 0.717766, g: 0.47363466, b: 0.42387995, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6006,7 +6006,7 @@ MonoBehaviour:
   - {fileID: 2008216693}
   - {fileID: 577847684}
   inputField: {fileID: 1274512111}
-  playerCount: 7
+  playerCount: 4
   sceneChangeScript: {fileID: 2058378168}
 --- !u!114 &2058378170
 MonoBehaviour:

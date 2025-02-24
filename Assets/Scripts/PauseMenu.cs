@@ -7,8 +7,9 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] GameObject pauseMenu = null;
     [SerializeField] GameObject leaderBoard;
     [SerializeField] GameObject Settings;
+    [SerializeField] GameObject Endscreen;
 
-    bool isPaused, LeaderBoard, settings;
+    bool isPaused, LeaderBoard, settings, endscreen;
     // Update is called once per frame
     void Update()
     {
@@ -37,6 +38,14 @@ public class PauseMenu : MonoBehaviour
     {
         settings = !settings;
         Settings.SetActive(settings);
+    }
+
+    public void EndScreen()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = isPaused ? 0 : 1;
+        endscreen = !endscreen;
+        Endscreen.SetActive(endscreen);
     }
 
 }

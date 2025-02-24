@@ -32,6 +32,12 @@ public class SceneChangeScript : MonoBehaviour
         StartCoroutine(Delay("backMenu", -1, ""));
     }
 
+    public void EndScreenGoBack()
+    {
+        pauseMenu.EndScreen();
+        StartCoroutine(Delay("backMenu", -1, ""));
+    }
+
     public void GoBackToSettings()
     {
         pauseMenu.Menu();

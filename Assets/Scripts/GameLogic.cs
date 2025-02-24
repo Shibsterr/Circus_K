@@ -27,7 +27,7 @@ public class GameLogic : MonoBehaviour
     private int currentPlayerIndex = 0;
     private int rollCount = 0;
     private float startTime;
-    private bool gameOver = false; // Prevent further actions after the game ends
+    private bool gameOver = false;
 
     void Start()
     {
@@ -90,7 +90,7 @@ public class GameLogic : MonoBehaviour
                 rollCount++;
             }
 
-            Debug.Log($"🎲 Dice rolled: {steps} steps! Starting movement...");
+            Debug.Log($"Dice rolled: {steps} steps! Starting movement...");
             StartCoroutine(MoveStepByStep(steps));
         }
     }
@@ -112,7 +112,7 @@ public class GameLogic : MonoBehaviour
             if (nextIndex >= waypoints.Count) break;
 
             Transform nextWaypoint = waypoints[nextIndex];
-            Debug.Log($"🚶 Moving step {stepCount + 1}/{steps} ➡ Tile {nextIndex} at {nextWaypoint.position}");
+            Debug.Log($"Moving step {stepCount + 1}/{steps} ➡ Tile {nextIndex} at {nextWaypoint.position}");
 
             yield return StartCoroutine(MoveToPosition(character, nextWaypoint.position));
 
@@ -120,14 +120,14 @@ public class GameLogic : MonoBehaviour
             {
                 facingRight = !facingRight;
                 characterSprite.flipX = !characterSprite.flipX;
-                Debug.Log($"🔄 Turned after leaving tile {playerTilePositions[currentPlayerIndex]}, now facing {(facingRight ? "right" : "left")}");
+                Debug.Log($"Turned after leaving tile {playerTilePositions[currentPlayerIndex]}, now facing {(facingRight ? "right" : "left")}");
             }
 
             playerTilePositions[currentPlayerIndex] = nextIndex;
             stepCount++;
         }
 
-        Debug.Log($"✅ Finished moving. Landed on tile {playerTilePositions[currentPlayerIndex]} after {stepCount} steps.");
+        Debug.Log($"Finished moving. Landed on tile {playerTilePositions[currentPlayerIndex]} after {stepCount} steps.");
         PlayAnimation("Idle");
         isMoving = false;
         SpreadPlayersOnTile(playerTilePositions[currentPlayerIndex]);
@@ -140,7 +140,7 @@ public class GameLogic : MonoBehaviour
         {
             if (diceRollScript != null)
             {
-                Debug.Log("🎲 Resetting dice for next roll.");
+                Debug.Log("Resetting dice for next roll.");
                 diceRollScript.ResetDice();
             }
             NextTurn();
@@ -149,7 +149,7 @@ public class GameLogic : MonoBehaviour
 
     void HandleWin()
     {
-        Debug.Log("🏆 Game Over!");
+        Debug.Log("Game Over!");
 
         gameOver = true; // Stop further actions
         Time.timeScale = 0f; // Pause game time
@@ -159,11 +159,11 @@ public class GameLogic : MonoBehaviour
 
         if (currentPlayerIndex == 0)
         {
-            winMessageText.text = "🎉 You Won! 🏆";
+            winMessageText.text = "You Won!";
         }
         else
         {
-            winMessageText.text = "💀 You Lost! The AI Won... 😞";
+            winMessageText.text = "You Lost!";
         }
 
         rollsCountText.text = $"Rolls Taken: {rollCount}";
@@ -204,7 +204,7 @@ public class GameLogic : MonoBehaviour
             character.transform.position = Vector3.MoveTowards(character.transform.position, target, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        Debug.Log($"✔️ Reached waypoint at {target}");
+        Debug.Log($"Reached waypoint at {target}");
     }
 
     void PlayAnimation(string action)
@@ -213,13 +213,13 @@ public class GameLogic : MonoBehaviour
         {
             string animationName = characterName + action;
             characterAnimator.Play(animationName);
-            Debug.Log($"🎭 Playing animation: {animationName}");
+            Debug.Log($"Playing animation: {animationName}");
         }
     }
 
     void NextTurn()
     {
-        if (gameOver) return; // Stop turn progression if the game has ended
+        if (gameOver) return;
 
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
         SetupCurrentPlayer();
@@ -233,7 +233,7 @@ public class GameLogic : MonoBehaviour
     IEnumerator AIRollDice()
     {
         yield return new WaitForSeconds(1f);
-        Debug.Log("🎲 AI is rolling the dice...");
+        Debug.Log("AI is rolling the dice...");
         diceRollScript.RollDice();
     }
 
